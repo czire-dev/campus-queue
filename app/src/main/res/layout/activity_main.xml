@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <!-- 1. Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hello!"
+                android:textAppearance="@style/TextAppearance.Material3.LabelLarge" />
+
+            <TextView
+                android:id="@+id/tvStudentName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User Name"
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge.Emphasized" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="What service do you need today?"
+                android:textAppearance="@style/TextAppearance.Material3.LabelSmall" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnProfile"
+            style="@style/Widget.Material3Expressive.Button.IconButton.Tonal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/baseline_person_24" />
+    </LinearLayout>
+
+    <!-- 2. Ticket Card -->
+    <LinearLayout
+        android:id="@+id/btnViewTicket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/outline_mobile_ticket_24" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View My Ticket"
+                android:textAppearance="@style/TextAppearance.Material3.LabelLarge.Emphasized" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Click to see your ticket details"
+                android:textAppearance="@style/TextAppearance.Material3.LabelMedium" />
+        </LinearLayout>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/outline_arrow_forward_ios_24" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:text="Services"
+        android:layout_marginTop="16dp"
+        android:textAppearance="@style/TextAppearance.Material3.LabelLarge.Emphasized"
+        android:layout_height="wrap_content"/>
+
+    <!-- 3. Services Grid (Takes up all remaining screen space) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewServices"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="12dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        tools:listitem="@layout/layout_service_card" />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:text="View all queue"
+        android:id="@+id/btnViewAll"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
