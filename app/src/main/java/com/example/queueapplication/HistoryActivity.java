@@ -10,9 +10,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.queueapplication.adapters.TicketHistoryAdapter;
 import com.example.queueapplication.data.AppStore;
+import com.example.queueapplication.data.enums.Role;
+import com.example.queueapplication.data.models.Ticket;
+import com.example.queueapplication.data.models.User;
 import com.example.queueapplication.databinding.ActivityHistoryBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
     private ActivityHistoryBinding binding;
@@ -29,13 +33,20 @@ public class HistoryActivity extends AppCompatActivity {
             return insets;
         });
 
-        ticketHistoryAdapter = new TicketHistoryAdapter(AppStore.getInstance().getCurrentUserHistory());
+
+        User currentUser = AppStore.getInstance().getCurrentUser();
+        List<Ticket> list = currentUser.getRole() == Role.STAFF ? AppStore.getInstance().getHistory() : AppStore.getInstance().getCurrentUserHistory();
+
+        ticketHistoryAdapter = new TicketHistoryAdapter(list);
         binding.recyclerView.setAdapter(ticketHistoryAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        ticketHistoryAdapter.updateData(AppStore.getInstance().getCurrentUserHistory());
+        User currentUser = AppStore.getInstance().getCurrentUser();
+        List<Ticket> list = currentUser.getRole() == Role.STAFF ? AppStore.getInstance().getHistory() : AppStore.getInstance().getCurrentUserHistory();
+
+        ticketHistoryAdapter.updateData(list);
     }
 }

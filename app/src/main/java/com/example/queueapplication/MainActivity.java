@@ -44,20 +44,40 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        serviceAdapter = new ServiceAdapter(new ArrayList<>(AppStore.getInstance().services));
-        serviceAdapter.setListener(new ServiceAdapter.OnItemClickListener() {
-            @Override
-            public void onServiceClick(Service service) {
-                AppStore.getInstance().setCurrentService(service);
-                Log.d("CHANGE_SERVICE", AppStore.getInstance().getCurrentService().getTitle());
-                startActivity(new Intent(getApplicationContext(), QueueActivity.class));
-            }
+//        serviceAdapter = new ServiceAdapter(new ArrayList<>(AppStore.getInstance().services));
+//        serviceAdapter.setListener(new ServiceAdapter.OnItemClickListener() {
+//            @Override
+//            public void onServiceClick(Service service) {
+//                AppStore.getInstance().setCurrentService(service);
+//                Log.d("CHANGE_SERVICE", AppStore.getInstance().getCurrentService().getTitle());
+//                startActivity(new Intent(getApplicationContext(), QueueActivity.class));
+//            }
+//        });
+//        binding.recyclerViewServices.setAdapter(serviceAdapter);
+
+        binding.registrarService.setOnClickListener(view -> {
+            AppStore.getInstance().setCurrentService(AppStore.getInstance().getServiceByName("registrar"));
+            startActivity(new Intent(getApplicationContext(), QueueActivity.class));
         });
-        binding.recyclerViewServices.setAdapter(serviceAdapter);
+        binding.cashierService.setOnClickListener(view -> {
+            AppStore.getInstance().setCurrentService(AppStore.getInstance().getServiceByName("cashier"));
+            startActivity(new Intent(getApplicationContext(), QueueActivity.class));
+        });
+        binding.itService.setOnClickListener(view -> {
+            AppStore.getInstance().setCurrentService(AppStore.getInstance().getServiceByName("it help desk"));
+            startActivity(new Intent(getApplicationContext(), QueueActivity.class));
+        });
+        binding.scholarshipService.setOnClickListener(view -> {
+            AppStore.getInstance().setCurrentService(AppStore.getInstance().getServiceByName("scholarship office"));
+            startActivity(new Intent(getApplicationContext(), QueueActivity.class));
+        });
+
 
         binding.tvStudentName.setText(AppStore.getInstance().getCurrentUser().getName());
 
         updateUI();
+//        binding.tvAssignedAt.setText(AppStore.getInstance().getCurrentService().getTitle());
+
 
         binding.btnViewTicket.setOnClickListener(view -> {
             updateUI();
@@ -68,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             ticketDialogBinding.tvServiceName.setText(currentTicket.getService().getTitle());
             ticketDialogBinding.imgCard.setImageResource(currentTicket.getService().getImgResourceId());
             ticketDialogBinding.tvTicketNo.setText(currentTicket.getTicketNo());
-            ticketDialogBinding.tvPositionNum.setText(Helper.formatPosition(AppStore.getInstance().getPosition(currentTicket)));
+            ticketDialogBinding.tvPositionNum.setText(Helper.formatPosition((AppStore.getInstance().getPosition(currentTicket) + 1)));
             ticketDialogBinding.tvChipStatus.setText(currentTicket.getStatus().name());
 //            ticketDialogBinding.tvEwt.setText();
 
@@ -94,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("KEY_DISPLAY", "All");
             startActivity(intent);
         });
-        binding.btnProfile.setOnClickListener(view -> {
+        binding.btnHistory.setOnClickListener(view -> {
             startActivity(new Intent(this, HistoryActivity.class));
         });
     }
@@ -107,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             binding.btnViewTicket.setVisibility(VISIBLE);
         }
-
 
 
     }

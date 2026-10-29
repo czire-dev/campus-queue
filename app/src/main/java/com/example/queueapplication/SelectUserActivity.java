@@ -3,20 +3,25 @@ package com.example.queueapplication;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.queueapplication.adapters.UserAdapter;
+import com.example.queueapplication.adapters.StaffAdapter;
+import com.example.queueapplication.adapters.StudentAdapter;
 import com.example.queueapplication.data.AppStore;
+import com.example.queueapplication.data.enums.Role;
 import com.example.queueapplication.data.models.User;
 import com.example.queueapplication.databinding.ActivitySelectUserBinding;
 
+import java.util.stream.Collectors;
+
 public class SelectUserActivity extends AppCompatActivity {
     private ActivitySelectUserBinding binding;
-    private UserAdapter userAdapter;
+    private StudentAdapter studentAdapter;
+    private StaffAdapter staffAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,14 +35,26 @@ public class SelectUserActivity extends AppCompatActivity {
 
         AppStore.init(this);
 
-        userAdapter = new UserAdapter(AppStore.getInstance().getUsers());
-        userAdapter.setListener(new UserAdapter.OnItemClickListener() {
+        studentAdapter = new StudentAdapter(AppStore.getInstance().getUsers().stream().filter(user -> user.getRole() == Role.STUDENT).collect(Collectors.toList()));
+        studentAdapter.setListener(new StudentAdapter.OnItemClickListener() {
             @Override
             public void onSelect(User user) {
                 AppStore.getInstance().setCurrentUser(user);
                 startActivity(new Intent(SelectUserActivity.this, MainActivity.class));
             }
         });
-        binding.recyclerView.setAdapter(userAdapter);
+        binding.recyclerViewStudent.setAdapter(studentAdapter);
+
+        staffAdapter = new StaffAdapter(AppStore.getInstance().getUsers().stream().filter(user -> user.getRole() == Role.STAFF).collect(Collectors.toList()));
+        staffAdapter.setListener(new StudentAdapter.OnItemClickListener() {
+            @Override
+            public void onSelect(User user) {
+                AppStore.getInstance().setCurrentUser(user);
+                startActivity(new Intent(SelectUserActivity.this, MainActivity.class));
+            }
+        });
+        binding.recyclerViewStaff.setAdapter(staffAdapter);
+
+
     }
 }

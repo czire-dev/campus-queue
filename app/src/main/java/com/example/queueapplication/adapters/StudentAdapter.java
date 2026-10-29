@@ -11,7 +11,7 @@ import com.example.queueapplication.databinding.LayoutUserItemBinding;
 
 import java.util.List;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
+public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHolder> {
     private List<User> dataset;
     private OnItemClickListener listener;
 
@@ -23,7 +23,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         void onSelect(User user);
     }
 
-    public UserAdapter(List<User> dataset) {
+    public StudentAdapter(List<User> dataset) {
         this.dataset = dataset;
     }
 
@@ -36,7 +36,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User user = dataset.get(position);
-        holder.bind(user, listener);
+        holder.bind(user, listener, position);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             this.binding = binding;
         }
 
-        public void bind(User user, OnItemClickListener listener) {
+        public void bind(User user, OnItemClickListener listener, int position) {
             binding.tvUsername.setText(user.getName());
             binding.tvRole.setText(user.getRole().name());
             binding.getRoot().setOnClickListener(view -> listener.onSelect(user));

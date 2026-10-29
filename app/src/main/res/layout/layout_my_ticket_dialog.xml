@@ -36,11 +36,12 @@
                     android:textAppearance="@style/TextAppearance.Material3.TitleLarge.Emphasized"
                     android:layout_height="wrap_content"/>
                 <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    style="@style/Widget.Material3.Chip.Assist"
-                    android:text="Status"
                     android:id="@+id/tvChipStatus"
-                    android:layout_height="wrap_content"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Chip.Assist"
+                    android:text="WAITING"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
             </LinearLayout>
         </LinearLayout>
 

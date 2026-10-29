@@ -1,119 +1,506 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".MainActivity">
+    android:background="@color/screenbg"
+    tools:context=".MainActivity"
+    >
 
-    <!-- 1. Header -->
-    <LinearLayout
+
+    <RelativeLayout
+        android:layout_marginTop="40dp"
+        android:id="@+id/panel1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:padding="12dp"
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+        >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hello!"
-                android:textAppearance="@style/TextAppearance.Material3.LabelLarge" />
-
-            <TextView
-                android:id="@+id/tvStudentName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User Name"
-                android:textAppearance="@style/TextAppearance.Material3.TitleLarge.Emphasized" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="What service do you need today?"
-                android:textAppearance="@style/TextAppearance.Material3.LabelSmall" />
-        </LinearLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnProfile"
-            style="@style/Widget.Material3Expressive.Button.IconButton.Tonal"
+        <TextView
+            android:id="@+id/tvGoodMorning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:icon="@drawable/baseline_person_24" />
-    </LinearLayout>
+            android:fontFamily="@font/inter_medium"
+            android:includeFontPadding="false"
+            android:text="Good morning, "
+            android:textSize="18sp" />
 
-    <!-- 2. Ticket Card -->
-    <LinearLayout
-        android:id="@+id/btnViewTicket"
+        <TextView
+            android:id="@+id/tvStudentName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvGoodMorning"
+            android:fontFamily="@font/inter_medium"
+            android:includeFontPadding="false"
+            android:text="Manny Pacquiao"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+
+            />
+
+        <TextView
+            android:id="@+id/tvWhatServiceDoYouNeedToday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvStudentName"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/inter_medium"
+            android:includeFontPadding="false"
+            android:text="What service do you need today?"
+
+            />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/icon_background"
+            android:backgroundTint="@color/lightblue"
+            android:src="@drawable/baseline_person_24"
+            app:shapeAppearanceOverlay="@style/CircularImageView" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/panel2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_below="@+id/panel1"
+        android:gravity="center"
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/outline_mobile_ticket_24" />
+        >
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="12dp"
-            android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="View My Ticket"
-                android:textAppearance="@style/TextAppearance.Material3.LabelLarge.Emphasized" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Click to see your ticket details"
-                android:textAppearance="@style/TextAppearance.Material3.LabelMedium" />
+                android:orientation="horizontal"
+
+                >
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/registrarService"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:elevation="20dp"
+                    app:cardCornerRadius="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="180dp"
+                        android:layout_height="140dp"
+                        android:padding="8dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imgDisplayRegister"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/icon_background"
+                            android:backgroundTint="@color/blue"
+                            android:src="@drawable/outline_garage_door_24"
+                            android:tint="@color/white"
+                            app:contentPadding="8dp" />
+
+                        <TextView
+                            android:id="@+id/tvRegister"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/imgDisplayRegister"
+                            android:layout_marginHorizontal="8dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Registrar"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvAcademicRecords"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tvRegister"
+                            android:layout_marginHorizontal="8dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Academic Records" />
+
+
+                    </RelativeLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:elevation="20dp"
+                    app:cardCornerRadius="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="180dp"
+                        android:id="@+id/cashierService"
+                        android:layout_height="140dp"
+                        android:padding="8dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imgDisplayCashier"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/icon_background"
+                            android:backgroundTint="@color/green"
+                            android:src="@drawable/outline_attach_money_24"
+                            android:tint="@color/white"
+                            app:contentPadding="8dp" />
+
+                        <TextView
+                            android:id="@+id/tvCashier"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/imgDisplayCashier"
+                            android:layout_marginHorizontal="8dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Cashier"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvPaymentAndFees"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tvCashier"
+                            android:layout_marginHorizontal="8dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Payments and Fees" />
+
+
+                    </RelativeLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+
+                >
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:elevation="20dp"
+                    app:cardCornerRadius="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="180dp"
+                        android:layout_height="140dp"
+                        android:id="@+id/itService"
+                        android:padding="8dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imgItHelpDesk"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/icon_background"
+                            android:backgroundTint="@color/green"
+                            android:src="@drawable/outline_monitor_24"
+                            android:tint="@color/white"
+                            app:contentPadding="8dp" />
+
+                        <TextView
+                            android:id="@+id/tvItHelpDesk"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/imgItHelpDesk"
+                            android:layout_marginHorizontal="8dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="It Help Desk"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvTechnicalSupport"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tvItHelpDesk"
+                            android:layout_marginHorizontal="8dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Technical Support" />
+
+
+                    </RelativeLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:elevation="20dp"
+                    app:cardCornerRadius="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="180dp"
+                        android:layout_height="140dp"
+                        android:id="@+id/scholarshipService"
+                        android:padding="8dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imgDisplayScholarshipOffice"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/icon_background"
+                            android:backgroundTint="@color/red"
+                            android:src="@drawable/outline_headphones_24"
+                            android:tint="@color/white"
+                            app:contentPadding="8dp" />
+
+                        <TextView
+                            android:id="@+id/tvScholarshipOffice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/imgDisplayScholarshipOffice"
+                            android:layout_marginHorizontal="8dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Scholarship Office"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvFinancialAid"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tvScholarshipOffice"
+                            android:layout_marginHorizontal="8dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Financial Aid" />
+
+
+                    </RelativeLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
         </LinearLayout>
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:src="@drawable/outline_arrow_forward_ios_24" />
-    </LinearLayout>
+
+    </RelativeLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardMyTicket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/panel2"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="8dp"
+        android:clickable="true"
+        app:cardCornerRadius="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:id="@+id/btnViewTicket"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgMyTicket"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/icon_background"
+                android:backgroundTint="@color/blue"
+                android:src="@drawable/outline_export_notes_24"
+                android:tint="@color/white"
+                app:contentPadding="8dp" />
+
+
+            <TextView
+                android:id="@+id/tvMyTicket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@id/imgMyTicket"
+                android:fontFamily="@font/inter_medium"
+                android:text="My Ticket"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/TvViewTicketStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvMyTicket"
+                android:layout_toRightOf="@id/imgMyTicket"
+                android:text="View your current queue status" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:alpha=".5"
+                android:src="@drawable/outline_keyboard_arrow_right_24"
+
+                />
+
+
+        </RelativeLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
-        android:layout_width="match_parent"
-        android:text="Services"
-        android:layout_marginTop="16dp"
-        android:textAppearance="@style/TextAppearance.Material3.LabelLarge.Emphasized"
-        android:layout_height="wrap_content"/>
+        android:id="@+id/tvQuickActions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cardMyTicket"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="8dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="Quick Actions"
+        android:textColor="@color/black"
+        android:textSize="20sp"
 
-    <!-- 3. Services Grid (Takes up all remaining screen space) -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewServices"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="12dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        tools:listitem="@layout/layout_service_card" />
+        />
 
-    <com.google.android.material.button.MaterialButton
+    <LinearLayout
         android:layout_width="match_parent"
-        android:text="View all queue"
-        android:id="@+id/btnViewAll"
-        style="@style/Widget.MaterialComponents.Button"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvQuickActions"
+        android:gravity="center">
 
-</LinearLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="180dp"
+            android:layout_height="80dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            app:cardCornerRadius="20dp"
+
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:id="@+id/btnViewAll"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgCrown"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/icon_background"
+                    android:backgroundTint="@color/blue"
+                    android:src="@drawable/outline_chess_queen_24"
+                    android:tint="@color/white"
+                    app:contentPadding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toRightOf="@id/imgCrown"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="View Queue Status"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="180dp"
+            android:layout_height="80dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            app:cardCornerRadius="20dp"
+
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:id="@+id/btnHistory"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgTimer"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/icon_background"
+                    android:backgroundTint="@color/blue"
+                    android:src="@drawable/outline_av_timer_24"
+                    android:tint="@color/white"
+                    app:contentPadding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toRightOf="@id/imgTimer"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="Queue History"
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+    </LinearLayout>
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:padding="12dp"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_height="wrap_content">-->
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="You are assigned at:"-->
+<!--            android:textAppearance="@style/TextAppearance.Material3.TitleMedium.Emphasized"-->
+<!--            android:layout_height="wrap_content"/>-->
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="@string/app_name"-->
+<!--            android:id="@+id/tvAssignedAt"-->
+<!--            android:layout_height="wrap_content"/>-->
+<!--    </LinearLayout>-->
+
+</RelativeLayout>

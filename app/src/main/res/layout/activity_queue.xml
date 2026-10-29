@@ -84,7 +84,6 @@
                 <View
                     android:layout_width="2dp"
                     android:layout_marginHorizontal="12dp"
-                    android:background="@color/material_dynamic_primary50"
                     android:layout_height="32dp"/>
 
                 <LinearLayout
@@ -117,6 +116,16 @@
         tools:listitem="@layout/layout_ticket_item"
         android:layout_weight="1"
         android:layout_height="0dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="No Tickets Yet."
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:id="@+id/tvEmpty"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge.Emphasized"
+        android:layout_height="match_parent"/>
 
     <LinearLayout
         android:layout_width="match_parent"

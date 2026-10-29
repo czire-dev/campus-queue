@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class AppStore {
@@ -28,6 +29,16 @@ public class AppStore {
     private int ticketId = 0;
     private int userId = 0;
     private int historyId = 0;
+
+    private long date = 0;
+
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
 
     private User currentUser = null;
 
@@ -84,6 +95,11 @@ public class AppStore {
 
         tickets.addAll(Arrays.asList(t1, t2, t3, t4));
 
+        reg.setStaffs(new ArrayList<>(List.of(s5.getId())));
+        cs.setStaffs(new ArrayList<>(List.of(s6.getId())));
+        it.setStaffs(new ArrayList<>(List.of(s7.getId())));
+        sch.setStaffs(new ArrayList<>(List.of(s8.getId())));
+
         setCurrentUser(s1);
     }
 
@@ -104,10 +120,35 @@ public class AppStore {
         return history.stream().filter(ticket -> ticket.getUser().getId() == currentUser.getId()).collect(Collectors.toList());
     }
 
-    public Ticket getCurrentServingByService(Service service) {
-        List<Ticket> ticketList = tickets.stream().filter(ticket -> ticket.getService().getId() == service.getId() && ticket.getStatus() == Status.SERVING).collect(Collectors.toList());
-        return ticketList.isEmpty() ? null : ticketList.get(0);
+    public List<Ticket> getHistory() {
+        return new ArrayList<>(history);
     }
+
+    public Service getServiceByName(String name) {
+        for(Service s : services){
+            if(s.getTitle().toLowerCase(Locale.ROOT).contains(name.toLowerCase())) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+
+    public Ticket getCurrentServingByService(Service service) {
+        if (service == null) {
+            return null;
+        }
+
+        return tickets.stream()
+                .filter(ticket ->
+                        ticket != null
+                                && ticket.getService() != null
+                                && ticket.getService().getId() == service.getId()
+                                && ticket.getStatus() == Status.SERVING)
+                .findFirst()
+                .orElse(null);
+    }
+
 
     public List<Ticket> getTicketsByService(Service service) {
         if(service == null) return null;
@@ -166,6 +207,7 @@ public class AppStore {
         if(newStatus == Status.CANCELLED || newStatus == Status.COMPLETED) {
             history.add(ticket);
             tickets.removeIf(ticket1 -> ticket1.getId() == ticket.getId());
+            setDate(System.currentTimeMillis());
             Log.d("HISTORY_SIZE", history.size() +"");
             Log.d("TICKETS_SIZE", tickets.size()+"");
             return ticket;
@@ -180,6 +222,38 @@ public class AppStore {
 
         Log.d("HERE", "NULL");
         return null;
+    }
+
+    public boolean callNext(Service service) {
+        Ticket currentServing = getCurrentServingByService(service);
+        if(currentServing != null) return false;
+
+        List<Ticket> ticketsByService = getTicketsByService(service);
+        Ticket ticket = ticketsByService.get(0);
+
+        ticket.setStatus(Status.SERVING);
+        for (int i = 0; i < tickets.size(); i++) {
+            if(tickets.get(i).getId() == ticket.getId()) {
+                tickets.set(i, ticket);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean markAsDone(Service service) {
+        Ticket currentServing = getCurrentServingByService(service);
+        if(currentServing == null) return false;
+
+        currentServing.setStatus(Status.COMPLETED);
+        for (int i = 0; i < tickets.size(); i++) {
+            if(tickets.get(i).getId() == currentServing.getId()) {
+                tickets.set(i, currentServing);
+                return true;
+            }
+        }
+        return true;
     }
 
     private boolean isValidStatusChange(Status oldStatus, Status newStatus) {

@@ -8,6 +8,7 @@ public class Service extends BaseModel {
     private int imgResourceId;
     private String title, subtitle, prefix;
     private Priority priorityLevel;
+    private List<Integer> staffIds;
 
 
     public Service(int imgResourceId, String title, String subtitle, String prefix, Priority priorityLevel) {
@@ -25,6 +26,14 @@ public class Service extends BaseModel {
         this.subtitle = subtitle;
         this.prefix = prefix;
         this.priorityLevel = priorityLevel;
+    }
+
+    public List<Integer> getStaffs() {
+        return staffIds;
+    }
+
+    public void setStaffs(List<Integer> staffIds) {
+        this.staffIds = staffIds;
     }
 
     public Priority getPriorityLevel() {

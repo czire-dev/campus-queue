@@ -15,6 +15,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.queueapplication.adapters.TicketAdapter;
 import com.example.queueapplication.data.AppStore;
 import com.example.queueapplication.data.enums.Role;
+import com.example.queueapplication.data.enums.Status;
+import com.example.queueapplication.data.models.Service;
 import com.example.queueapplication.data.models.Ticket;
 import com.example.queueapplication.data.models.User;
 import com.example.queueapplication.databinding.ActivityQueueBinding;
@@ -36,6 +38,7 @@ public class QueueActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.binding = ActivityQueueBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        keyDisplay = getIntent().getStringExtra("KEY_DISPLAY");
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -43,20 +46,30 @@ public class QueueActivity extends AppCompatActivity {
         });
 
 
-        keyDisplay = getIntent().getStringExtra("KEY_DISPLAY");
-        List<Ticket> initialList = (keyDisplay != null && keyDisplay.equalsIgnoreCase("all"))
-                ? AppStore.getInstance().getSortedWaitingList()
-                : AppStore.getInstance().getTicketsByService(AppStore.getInstance().getCurrentService());
-        ticketAdapter = new TicketAdapter(initialList);
-        ticketAdapter.setListener(new TicketAdapter.OnItemClickListener() {
-            @Override
-            public void onClick(Ticket ticket) {
-                // TODO: Open ticket detail dialog
+
+        boolean isAllView = "all".equalsIgnoreCase(keyDisplay);
+
+        AppStore store = AppStore.getInstance();
+
+        List<Ticket> initialList;
+
+        if (isAllView) {
+            initialList = store.getSortedWaitingList();
+        } else {
+            initialList = store.getTicketsByService(store.getCurrentService());
+
+            if (initialList == null) {
+                initialList = new ArrayList<>();
             }
-        });
+        }
+
+        ticketAdapter = new TicketAdapter(initialList, isAllView);
         binding.recyclerView.setAdapter(ticketAdapter);
 
-        ticketToDisplay = AppStore.getInstance().getCurrentServingByService(AppStore.getInstance().getCurrentService());
+        ticketToDisplay = isAllView
+                ? null
+                : store.getCurrentServingByService(store.getCurrentService());
+
 
         binding.btnJoin.setOnClickListener(view -> {
             Ticket ticket = AppStore.getInstance().joinQueue();
@@ -70,10 +83,29 @@ public class QueueActivity extends AppCompatActivity {
             updateTickets();
         });
         binding.btnCallNext.setOnClickListener(view -> {
+            boolean success = AppStore.getInstance().callNext(AppStore.getInstance().getCurrentService());
+            if(!success) {
+                return;
+            }
+            Toast.makeText(this, "Called next", Toast.LENGTH_SHORT).show();
+            ticketAdapter.updateData(AppStore.getInstance().getTicketsByService(AppStore.getInstance().getCurrentService()));
+            ticketToDisplay = isAllView
+                    ? null
+                    : store.getCurrentServingByService(store.getCurrentService());
+            updateUI();
 
         });
         binding.btnDone.setOnClickListener(view -> {
-
+            boolean success = AppStore.getInstance().markAsDone(AppStore.getInstance().getCurrentService());
+            if(!success) {
+                return;
+            }
+            Toast.makeText(this, "Ticket mark as done", Toast.LENGTH_SHORT).show();
+            ticketAdapter.updateData(AppStore.getInstance().getTicketsByService(AppStore.getInstance().getCurrentService()));
+            ticketToDisplay = isAllView
+                    ? null
+                    : store.getCurrentServingByService(store.getCurrentService());
+            updateUI();
         });
 
         updateUI();
@@ -88,26 +120,54 @@ public class QueueActivity extends AppCompatActivity {
         }
     }
 
+
     public void updateUI() {
         binding.btnGroupStaff.setVisibility(GONE);
         binding.btnJoin.setVisibility(GONE);
-
         binding.tvNoServing.setVisibility(GONE);
         binding.currentServing.setVisibility(GONE);
 
-        User currentUser = AppStore.getInstance().getCurrentUser();
-        boolean isAllView = keyDisplay != null && keyDisplay.equalsIgnoreCase("all");
+        AppStore store = AppStore.getInstance();
+        User currentUser = store.getCurrentUser();
+        Service currentService = store.getCurrentService();
 
-        if(currentUser.getRole() == Role.STAFF) {
-            binding.btnGroupStaff.setVisibility(VISIBLE);
+        boolean isAllView = "all".equalsIgnoreCase(keyDisplay);
+
+        List<Ticket> waitingTickets = currentService == null
+                ? new ArrayList<>()
+                : store.getTicketsByService(currentService);
+
+        if (waitingTickets == null) {
+            waitingTickets = new ArrayList<>();
+        }
+
+        boolean hasWaitingTickets = !waitingTickets.isEmpty();
+        boolean hasServingTicket = ticketToDisplay != null;
+
+        binding.btnCallNext.setEnabled(false);
+        binding.btnDone.setEnabled(false);
+
+        binding.tvEmpty.setVisibility(hasWaitingTickets ? GONE : VISIBLE);
+
+        if (currentUser.getRole() == Role.STAFF) {
+            if (currentService != null
+                    && currentService.getStaffs().contains(currentUser.getId())) {
+
+                binding.btnGroupStaff.setVisibility(VISIBLE);
+
+                binding.btnCallNext.setEnabled(
+                        !hasServingTicket && hasWaitingTickets
+                );
+
+                binding.btnDone.setEnabled(hasServingTicket);
+            }
         } else {
-            // Students should only see "Join Queue" if they are looking at a specific service, NOT when viewing "All"
             if (!isAllView) {
                 binding.btnJoin.setVisibility(VISIBLE);
             }
         }
 
-        if(ticketToDisplay == null) {
+        if (!hasServingTicket) {
             binding.tvNoServing.setVisibility(VISIBLE);
             binding.currentServing.setVisibility(GONE);
         } else {
@@ -116,14 +176,13 @@ public class QueueActivity extends AppCompatActivity {
 
             binding.tvTicketNumber.setText(ticketToDisplay.getTicketNo());
             binding.tvStatus.setText(ticketToDisplay.getStatus().name());
-//            binding.tvEwt.setText();
         }
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
         updateTickets();
-//        updateUI();
     }
 }

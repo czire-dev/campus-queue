@@ -15,6 +15,7 @@ import java.util.List;
 public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.ViewHolder> {
     private List<Ticket> dataset;
     private OnItemClickListener listener;
+    private boolean isAllView;
 
     public void setListener(OnItemClickListener listener) {
         this.listener = listener;
@@ -24,8 +25,9 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.ViewHolder
         void onClick(Ticket ticket);
     }
 
-    public TicketAdapter(List<Ticket> dataset) {
+    public TicketAdapter(List<Ticket> dataset, boolean isAllView) {
         this.dataset = dataset;
+        this.isAllView = isAllView;
     }
 
     public void updateData(List<Ticket> updated) {
@@ -43,7 +45,7 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Ticket ticket = dataset.get(position);
-        holder.bind(ticket, listener, position);
+        holder.bind(ticket, listener, position, isAllView);
     }
 
     @Override
@@ -59,12 +61,10 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.ViewHolder
             this.binding = binding;
         }
 
-        public void bind(Ticket ticket, OnItemClickListener listener, int position) {
-            // Safe position calculation based on the specific ticket's service queue
-            List<Ticket> serviceTickets = AppStore.getInstance().getTicketsByService(ticket.getService());
-            int queuePosition = position + 1;
+        public void bind(Ticket ticket, OnItemClickListener listener, int position, boolean isAllView) {
+            int displayPosition = isAllView ? (position + 1) : AppStore.getInstance().getPosition(ticket);
 
-            binding.tvPosition.setText(String.valueOf(AppStore.getInstance().getPosition(ticket)));
+            binding.tvPosition.setText(String.valueOf(displayPosition));
 
             String ticketNumber = ticket.getTicketNo() +
                     (AppStore.getInstance().getCurrentUser().getId() == ticket.getUser().getId() ? " (YOU)" : "");

@@ -6,10 +6,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.queueapplication.R;
+import com.example.queueapplication.data.AppStore;
+import com.example.queueapplication.data.enums.Status;
 import com.example.queueapplication.data.models.Ticket;
 import com.example.queueapplication.databinding.LayoutTicketHistoryItemBinding;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class TicketHistoryAdapter extends RecyclerView.Adapter<TicketHistoryAdapter.ViewHolder> {
     private List<Ticket> dataset;
@@ -49,10 +54,13 @@ public class TicketHistoryAdapter extends RecyclerView.Adapter<TicketHistoryAdap
         }
 
         public void bind(Ticket ticket, int position) {
-            binding.tvUsername.setText(ticket.getUser().getName());
-            binding.tvTicketNo.setText(ticket.getTicketNo());
+            binding.tvQueue.setText(ticket.getTicketNo());
             binding.tvStatus.setText(ticket.getStatus().name());
-            binding.tvServiceName.setText(ticket.getService().getTitle());
+            binding.tvRole.setText(ticket.getService().getTitle());
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa", Locale.ENGLISH);
+            binding.tvTime.setText(sdf.format(AppStore.getInstance().getDate()));
+            binding.tvStatus.setTextColor(ticket.getStatus() == Status.CANCELLED ? binding.getRoot().getResources().getColor(R.color.red) : binding.getRoot().getResources().getColor(R.color.green));
         }
+
     }
 }
